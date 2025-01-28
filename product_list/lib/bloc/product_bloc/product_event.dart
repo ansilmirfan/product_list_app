@@ -2,4 +2,5 @@ part of 'product_bloc.dart';
 
 @immutable
 sealed class ProductEvent {}
-final class ProductGetAllEvent extends ProductEvent{}
+
+final class ProductGetAllEvent extends ProductEvent {}
