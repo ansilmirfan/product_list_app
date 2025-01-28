@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_list/bloc/cart_bloc/cart_bloc.dart';
 import 'package:product_list/bloc/product_bloc/product_bloc.dart';
 import 'package:product_list/screens/bottom_nav.dart';
 
@@ -16,7 +17,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ProductBloc()..add(ProductGetAllEvent()),
-        )
+        ),
+        BlocProvider(
+          create: (context) => CartBloc()..add(CartGetAllEvent()),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

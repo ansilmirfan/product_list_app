@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_list/bloc/cart_bloc/cart_bloc.dart';
 import 'package:product_list/model/product_model.dart';
+import 'package:product_list/screens/productview/productview.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -14,23 +17,34 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       margin: const EdgeInsets.all(10),
-      child: Stack(
-        children: [
-          _productDetails(),
-          _addToCart(),
-        ],
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ProductDetailPage(
+              product: product,
+            ),
+          ));
+        },
+        child: Stack(
+          children: [
+            _productDetails(),
+            _addToCart(context),
+          ],
+        ),
       ),
     );
   }
 
-  Align _addToCart() {
+  Align _addToCart(BuildContext context) {
     return Align(
-          alignment: Alignment.topRight,
-          child: IconButton.filled(
-            onPressed: () {},
-            icon: const Icon(Icons.add_shopping_cart_outlined),
-          ),
-        );
+      alignment: Alignment.topRight,
+      child: IconButton.filled(
+        onPressed: () {
+          context.read<CartBloc>().add(AddToCartEvent(product));
+        },
+        icon: const Icon(Icons.add_shopping_cart_outlined),
+      ),
+    );
   }
 
   Column _productDetails() {

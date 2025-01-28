@@ -2,10 +2,10 @@ import 'package:product_list/model/cart_model.dart';
 import 'package:product_list/model/product_model.dart';
 
 class CartServices {
-  List<CartModel> cart = [];
+  static List<CartModel> cart = [];
 
   // Adding product to the cart
-  void addToCart(ProductModel product) {
+  static bool addToCart(ProductModel product) {
     // Checking for duplication
     bool isProductInCart = false;
     for (var item in cart) {
@@ -13,17 +13,19 @@ class CartServices {
       if (item.product == product) {
         item.increaseQuantity();
         isProductInCart = true;
-        break;
+        return false;
       }
     }
     // if product is not in the cart then adding to the cart list
     if (!isProductInCart) {
       cart.add(CartModel(product: product));
+      return true;
     }
+    return false;
   }
 
   //getting total price of the cart
-  double getTotalPrice() {
+  static double getTotalPrice() {
     double total = 0.0;
     for (var item in cart) {
       total += item.getTotalPrice();
