@@ -5,7 +5,7 @@ class CartServices {
   static List<CartModel> cart = [];
 
   // Adding product to the cart
-  static bool addToCart(ProductModel product) {
+  static void addToCart(ProductModel product) {
     // Checking for duplication
     bool isProductInCart = false;
     for (var item in cart) {
@@ -13,23 +13,31 @@ class CartServices {
       if (item.product == product) {
         item.increaseQuantity();
         isProductInCart = true;
-        return false;
+        break;
       }
     }
-    // if product is not in the cart then adding to the cart list
+    // if product is not in the cart
     if (!isProductInCart) {
       cart.add(CartModel(product: product));
-      return true;
     }
-    return false;
   }
 
-  //getting total price of the cart
+  // Get total price of the cart
   static double getTotalPrice() {
     double total = 0.0;
     for (var item in cart) {
       total += item.getTotalPrice();
     }
     return total;
+  }
+
+  //removing product from the cart
+  static void removeProduct(CartModel product) {
+    for (var item in cart) {
+      if (item == product) {
+        cart.remove(item);
+        break;
+      }
+    }
   }
 }

@@ -16,3 +16,7 @@ final class CartCompletedState extends CartState {
   List<CartModel> cart;
   CartCompletedState(this.cart, this.total);
 }
+
+final class CartProductAddedState extends CartState {
+
+}

@@ -10,7 +10,9 @@ final class AddToCartEvent extends CartEvent {
   AddToCartEvent(this.productModel);
 }
 
-final class CartGetAllEvent extends CartEvent {
-  
- 
+final class CartGetAllEvent extends CartEvent {}
+
+final class CartRemoveEvent extends CartEvent {
+  CartModel cartModel;
+  CartRemoveEvent(this.cartModel);
 }

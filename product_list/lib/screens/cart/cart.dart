@@ -5,6 +5,7 @@ import 'package:product_list/bloc/cart_bloc/cart_bloc.dart';
 import 'package:product_list/widget/custom_appbar.dart';
 import 'package:product_list/widget/error_message.dart';
 import 'package:product_list/widget/loading.dart';
+import 'package:product_list/widget/scaffold_messenger.dart';
 
 class Cart extends StatelessWidget {
   const Cart({super.key});
@@ -13,7 +14,12 @@ class Cart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar("Cart"),
-        body: BlocBuilder<CartBloc, CartState>(
+        body: BlocConsumer<CartBloc, CartState>(
+          listener: (context, state) {
+            if (state is CartProductAddedState) {
+              showProductAddedMessage(context);
+            }
+          },
           builder: (context, state) {
             if (state is CartLoadingState) {
               return const Loading();
@@ -21,7 +27,7 @@ class Cart extends StatelessWidget {
               if (state.cart.isEmpty) {
                 return const ErrorMessage(message: 'Cart is empty');
               } else {
-                _listView(state);
+                return _listView(state, context);
               }
             }
             return const SizedBox.shrink();
@@ -29,7 +35,7 @@ class Cart extends StatelessWidget {
         ));
   }
 
-  Column _listView(CartCompletedState state) {
+  Column _listView(CartCompletedState state, BuildContext context) {
     return Column(
       children: [
         Expanded(
@@ -60,7 +66,9 @@ class Cart extends StatelessWidget {
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.remove_shopping_cart),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<CartBloc>().add(CartRemoveEvent(cartItem));
+                    },
                   ),
                 ),
               );

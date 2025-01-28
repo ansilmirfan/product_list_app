@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -16,19 +17,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartGetAllEvent>(cartGetAllEvent);
     //event for addingproduct to the cart
     on<AddToCartEvent>(addToCartEvent);
+    //event for removing an item from the cart
+    on<CartRemoveEvent>(cartRemoveEvent);
   }
 
   FutureOr<void> cartGetAllEvent(
       CartGetAllEvent event, Emitter<CartState> emit) {
     emit(CartLoadingState());
     var cart = CartServices.cart;
-    emit(CartCompletedState(cart,CartServices.getTotalPrice()));
+    log(cart.length.toString());
+    emit(CartCompletedState(cart, CartServices.getTotalPrice()));
   }
 
   FutureOr<void> addToCartEvent(AddToCartEvent event, Emitter<CartState> emit) {
     emit(CartLoadingState());
     //if the add to cart returns true then success otherwise the item is already in the cart so it will increase the quantity
     CartServices.addToCart(event.productModel);
+    emit(CartProductAddedState());
+    add(CartGetAllEvent());
+  }
+
+  FutureOr<void> cartRemoveEvent(
+      CartRemoveEvent event, Emitter<CartState> emit) {
+    emit(CartLoadingState());
+    CartServices.removeProduct(event.cartModel);
     add(CartGetAllEvent());
   }
 }
