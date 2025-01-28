@@ -9,8 +9,8 @@ class BottomNav extends StatefulWidget {
   State<BottomNav> createState() => _BottomNavState();
 }
 
-int currentIndex = 1;
-List<Widget> _pages = [const Home(),const  Cart()];
+int currentIndex = 0;
+List<Widget> _pages = [const Home(), const Cart()];
 
 class _BottomNavState extends State<BottomNav> {
   @override
